@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>hello phaser!</title>
+        <script src="phaser.min.js"></script>
+    </head>
+    <body>
+
+    <script type="text/javascript">
+
+    window.onload = function() {
+
+        //  Note that this html file is set to pull down Phaser 2.5.0 from the JS Delivr CDN.
+        //  Although it will work fine with this tutorial, it's almost certainly not the most current version.
+        //  Be sure to replace it with an updated version before you start experimenting with adding your own code.
+
+        var game = new Phaser.Game(1280, 720, Phaser.AUTO, '', { preload: preload, create: create, update, });
+
+        function preload () {
+
+            game.load.image('logo', 'Assets/Images/phaser.png');
+            game.load.image('logo2', 'Assets/Images/phaser.png');
+            game.load.audio('sound', 'Assets/Sounds/Test.mp3');
+
+        }
+
+        function create () {
+
+            logo = game.add.sprite(game.world.centerX, game.world.centerY, 'logo');
+                logo.anchor.setTo(0.5, 0.5);
+
+            logo2 = game.add.sprite(game.world.centerX, game.world.centerY, 'logo2');
+                logo2.anchor.setTo(0, 0.5);
+
+            music = game.add.audio('sound');
+            music.play();
+            music.loopFull(0.6);
+        }
+
+        function update() {
+            logo.angle += 1;
+            logo2.angle -= 1;
+        }
+
+ 
+    };
+
+    </script>
+
+    </body>
+</html>
