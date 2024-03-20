@@ -77,6 +77,7 @@ class Example extends Phaser.Scene
         this.load.image('leafe_pile_l','assets/img/Leaf_pile_large.png');
         this.load.image('leaf_pile_s', 'assets/img/Leaf_pile_small.png');
         this.load.image('leaf_pile_xs', 'assets/img/Leaf_pile_x_small.png');
+        this.load.video('background', 'assets/vid/French.mp4','loadeddata',false,true);
     
 }
 
@@ -84,6 +85,14 @@ class Example extends Phaser.Scene
 
     create ()
     {
+
+        var background = this.add.video(this.sys.game.config.width/2,this.sys.game.config.height/2,'background');
+        background.setDepth(0);
+        background.setLoop(true);
+        background.play (true);
+        background.displayWidth = this.sys.game.config.width;
+        background.displayHeight = this.sys.game.config.height/1,25;
+
         // randomXToY();
         //     function randomXToY(minVal,maxVal)
         //     {
@@ -102,7 +111,7 @@ function createLeaf(scene) {
     let xCoord = Phaser.Math.Between(500, 850);
     let yCoord = Phaser.Math.Between(30, 150);
     let leaf = scene.physics.add.sprite(xCoord, yCoord, "leaf");
-    leaf.setScale(0.20);
+    leaf.setScale(Math.random()* 0.5+0.1);
     leaf.setGravityY(100);
     let rota = Phaser.Math.Between(-100, 100);
     leaf.setAngularVelocity(rota);
@@ -112,6 +121,9 @@ function createLeaf(scene) {
     ground.displayWidth = scene.sys.game.config.width;
     scene.physics.add.collider(leaf, ground);
     ground.setImmovable();
+    
+    
+
 
     //leafcount to decide which leafpile should be displayed
     
@@ -120,6 +132,8 @@ function createLeaf(scene) {
     scene.time.delayedCall(3200, function() {
         leaf.destroy();
     }, [], scene);
+
+    
 }
 
 // Define a function to create a leaf at random intervals
@@ -129,6 +143,7 @@ function createLeafAtRandomIntervals(scene) {
         delay: interval,
         callback: function () {
             createLeaf(scene);
+            
             // Call this function recursively to create leaf at another random interval
             createLeafAtRandomIntervals(scene);
         },
@@ -145,6 +160,7 @@ createLeafAtRandomIntervals(this);
         //leaf pile 1
         this.leaf_pile = this.add.image(677, 275, 'leaf_pile');
         this.leaf_pile.setScale(2.2,2.2);
+        this.leaf_pile.setDepth(3)
 
 
 
@@ -164,7 +180,7 @@ const config = {
     scene: Example,
     physics:{
         default:'arcade',
-        arcade:{debug:true}
+        arcade:{debug:false}
     }
 };
 
