@@ -173,8 +173,8 @@ createLeafAtRandomIntervals(this);
 
 const config = {
     type: Phaser.AUTO,
-    width: 1355,
-    height: 621,
+    width: window.innerWidth-20,
+    height: window.innerHeight-20,
     backgroundColor: '#4488aa',
     parent: 'phaser-example',
     scene: Example,
