@@ -1,4 +1,4 @@
-class Example extends Phaser.Scene
+class Menu extends Phaser.Scene
 {
     preload ()
     {
@@ -20,9 +20,9 @@ const config = {
     type: Phaser.AUTO,
     width: window.innerWidth-20,
     height: window.innerHeight-20,
-    backgroundColor: '#4488aa',
+    backgroundColor: '#c8c8c8',
     parent: 'phaser-example',
-    scene: Example,
+    scene: Menu,
     physics:{
         default:'arcade',
         arcade:{debug:false}
