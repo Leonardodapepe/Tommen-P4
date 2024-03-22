@@ -12,21 +12,9 @@ class Menu extends Phaser.Scene
 
     update ()
     {
-
+        if(this.input.keyboard.checkDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE), 500)){
+            this.scene.start('Gamescene');
+        }
     }
 }
 
-const config = {
-    type: Phaser.AUTO,
-    width: window.innerWidth-20,
-    height: window.innerHeight-20,
-    backgroundColor: '#c8c8c8',
-    parent: 'phaser-example',
-    scene: Menu,
-    physics:{
-        default:'arcade',
-        arcade:{debug:false}
-    }
-};
-
-const game = new Phaser.Game(config);

@@ -1,4 +1,10 @@
 class Game extends Phaser.Scene {
+
+constructor(){
+    super({key: 'Gamescene'})
+}
+
+
     preload() {
         this.load.image('background', 'assets/img/background.png');
         this.load.spritesheet('coin', 'assets/img/coin_spritesheet.png', { frameWidth: 320, frameHeight: 320 });
@@ -150,7 +156,7 @@ const config = {
     height: window.innerHeight - 20,
     backgroundColor: '#4488aa',
     parent: 'phaser-example',
-    scene: Game,
+    scene: [Menu,Game],
     physics: {
         default: 'arcade',
         arcade: { debug: true }
