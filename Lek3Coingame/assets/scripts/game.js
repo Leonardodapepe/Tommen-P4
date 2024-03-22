@@ -69,9 +69,23 @@ constructor(){
             assetText.destroy();
             console.log("complete");
         });
+
+        //tilemap
+        this.load.tilemapTiledJSON('map', 'assets/tile/Map.json');
+        //tilemap img
+        this.load.image('tiles', 'assets/tile/ground2.png',{frameWidth: 32, frameHeight: 32});
     }
 
     create() {
+
+                //tilemap
+                const map = this.make.tilemap({key:'map'});
+                const tileset = map.addTilesetImage('ground2','tiles');
+                var layer = map.createLayer('Tile Layer 1', tileset, 32,32);
+                layer.setCollisionBetween (0, 1);
+
+
+        //background
         this.singleImage = this.add.image(window.innerWidth / 2, 210, 'background');
         this.singleImage.setScale(5, 2.5);
 
@@ -107,6 +121,7 @@ constructor(){
         this.player.setScale(0.5); // Adjust scale as needed
         this.player.setGravityY(100);
         this.player.setBounce(0.1);
+        this.physics.add.collider(this.player,layer);
 
         // Define player animations
         this.anims.create({
@@ -125,6 +140,8 @@ constructor(){
 
         // Set up cursors for player input
         this.cursors = this.input.keyboard.createCursorKeys();
+
+
     }
 
     update() {
