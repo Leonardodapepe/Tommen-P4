@@ -71,37 +71,38 @@ constructor(){
         });
 
         //tilemap
-        this.load.tilemapTiledJSON('map', 'assets/tile/Map.json');
+        this.load.tilemapTiledJSON('map', 'map.json');
         //tilemap img
-        this.load.image('tiles', 'assets/tile/ground2.png',{frameWidth: 32, frameHeight: 32});
+        this.load.image('tiles', 'grassMid.png');
     }
 
     create() {
 
                 //tilemap
                 const map = this.make.tilemap({key:'map'});
-                const tileset = map.addTilesetImage('ground2','tiles');
-                var layer = map.createLayer('Tile Layer 1', tileset, 32,32);
+                const tileset = map.addTilesetImage('grassMid','tiles');
+                const layer = map.createLayer('Tile Layer 1', tileset, 0,-350);
                 layer.setCollisionBetween (0, 1);
 
 
         //background
-        this.singleImage = this.add.image(window.innerWidth / 2, 210, 'background');
-        this.singleImage.setScale(5, 2.5);
+        this.singleImage = this.add.image(window.innerWidth, 210, 'background');
+        this.singleImage.setScale(20, 12.5  );
+        this.singleImage.setDepth(-3)
 
         // Create an array to store coin sprites
         this.coins = this.physics.add.group({
             key: 'coin',
-            repeat: 9, // Number of coins to create
-            setXY: { x: 20, y: 200, stepX: 140 } // Position of the first coin and the distance between coins
+            repeat: 23, // Number of coins to create
+            setXY: { x: 20, y: -400, stepX: 140 } // Position of the first coin and the distance between coins
         });
 
         // Set properties for each coin
         this.coins.children.iterate(function (coin) {
-            coin.setScale(0.15); // Adjust scale as needed
-            coin.setGravityY(500);
-            coin.setCollideWorldBounds(true);
-            coin.setBounce(0.6);
+            coin.setScale(0.3); // Adjust scale as needed
+            coin.setGravityY(700);
+            this.physics.add.collider(coin,layer);
+            coin.setBounce(0.4);
 
             // Define coin animation for each coin
             coin.anims.create({
@@ -117,19 +118,16 @@ constructor(){
 
         // Add player sprite
         this.player = this.physics.add.sprite(100, 450, 'player');
-        this.player.setCollideWorldBounds(true);
-        this.player.setScale(0.5); // Adjust scale as needed
-        this.player.setGravityY(100);
+        this.player.setScale(1); // Adjust scale as needed
+        this.player.setGravityY(700);
         this.player.setBounce(0.1);
         this.physics.add.collider(this.player,layer);
 
-        // Define player animations
-        this.anims.create({
-            key: 'idle',
-            frames: this.anims.generateFrameNumbers('player', { start: 0, end: 0 }), // Adjust frame range based on your spritesheet
-            frameRate: 10,
-            repeat: -1
-        });
+        //camera
+        this.cameras.main.setZoom (0.5);
+        this.cameras.main.startFollow(this.player);
+
+
 
         // Initialize score
         this.score = 0;
@@ -147,16 +145,16 @@ constructor(){
     update() {
         // Player movement
         if (this.cursors.left.isDown) {
-            this.player.setVelocityX(-160);
+            this.player.setVelocityX(-300);
         } else if (this.cursors.right.isDown) {
-            this.player.setVelocityX(160);
+            this.player.setVelocityX(300);
         } else {
             this.player.setVelocityX(0);
         }
 
         // Player jump
         if (this.cursors.up.isDown && this.player.body.onFloor()) {
-            this.player.setVelocityY(-200);
+            this.player.setVelocityY(-1000);
         }
     }
 
