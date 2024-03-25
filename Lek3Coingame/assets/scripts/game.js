@@ -87,7 +87,7 @@ constructor(){
 
         //background
         this.singleImage = this.add.image(window.innerWidth, 210, 'background');
-        this.singleImage.setScale(20, 12.5  );
+        this.singleImage.setScale(25, 15  );
         this.singleImage.setDepth(-3)
 
         // Create an array to store coin sprites
