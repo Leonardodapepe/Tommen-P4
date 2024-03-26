@@ -1,7 +1,7 @@
-class Game extends Phaser.Scene {
-    
-constructor(){
-    super({key: 'Gamescene'})
+class Scene2 extends Phaser.Scene {
+
+    constructor() {
+        super({ key:'scene2'});
 }
 
 
@@ -162,16 +162,11 @@ constructor(){
         if (this.cursors.up.isDown && this.player.body.onFloor()) {
             this.player.setVelocityY(-950);
         }
-        if (this.score >= 30) {
-            // Transition to scene2
-            this.scene.start('scene2');
-        }
     }
-
+    //coin collection
     collectCoin(player, coin) {
         coin.disableBody(true, true); // Remove the coin from the screen
         this.score += 10; // Increase score by 10 for each coin collected
         this.scoreText.setText('Score: ' + this.score); // Update score text
     }
 }
-
