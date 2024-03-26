@@ -92,8 +92,9 @@ constructor(){
         this.singleImage.setDepth(-3)
 
         //lava
-        this.singleImage = this.add.image(window.innerWidth, 1800, 'lava');
-        this.singleImage.setScale (3);
+        this.lava = this.physics.add.image(window.innerWidth, 3600, 'lava');
+        this.lava.setScale (13,5);
+        this.lava.setImmovable(true);
 
         // Create an array to store coin sprites
         this.coins = this.physics.add.group({
@@ -127,6 +128,10 @@ constructor(){
         this.player.setGravityY(650);
         this.player.setBounce(0.1);
         this.physics.add.collider(this.player,layer);
+        this.physics.add.collider(this.player,this.lava, () => {
+            this.scene.restart();
+            this.score = 0;
+        });
 
         //camera
         this.cameras.main.setZoom (0.5);
@@ -151,9 +156,9 @@ constructor(){
         
         // Player movement
         if (this.cursors.left.isDown) {
-            this.player.setVelocityX(-300);
+            this.player.setVelocityX(-600);
         } else if (this.cursors.right.isDown) {
-            this.player.setVelocityX(300);
+            this.player.setVelocityX(600);
         } else {
             this.player.setVelocityX(0);
         }
@@ -162,7 +167,7 @@ constructor(){
         if (this.cursors.up.isDown && this.player.body.onFloor()) {
             this.player.setVelocityY(-950);
         }
-        if (this.score >= 30) {
+        if (this.score >= 230) {
             // Transition to scene2
             this.scene.start('scene2');
         }
@@ -174,4 +179,3 @@ constructor(){
         this.scoreText.setText('Score: ' + this.score); // Update score text
     }
 }
-

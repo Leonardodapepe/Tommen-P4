@@ -6,10 +6,8 @@ class Scene2 extends Phaser.Scene {
 
 
     preload() {
-        this.load.image('background', 'assets/img/background.png');
         this.load.spritesheet('coin', 'assets/img/coin_spritesheet.png', { frameWidth: 320, frameHeight: 320 });
         this.load.spritesheet('player', 'assets/img/egg.png', { frameWidth: 320, frameHeight: 320 });
-        this.load.image('lava', 'assets/img/lava.png');
 
         //Loading screen
         var progressBar = this.add.graphics();
@@ -86,14 +84,6 @@ class Scene2 extends Phaser.Scene {
                 layer.setCollisionBetween (0, 1);
 
 
-        //background
-        this.singleImage = this.add.image(window.innerWidth, 210, 'background');
-        this.singleImage.setScale(25, 15  );
-        this.singleImage.setDepth(-3)
-
-        //lava
-        this.singleImage = this.add.image(window.innerWidth, 1800, 'lava');
-        this.singleImage.setScale (3);
 
         // Create an array to store coin sprites
         this.coins = this.physics.add.group({
@@ -151,9 +141,9 @@ class Scene2 extends Phaser.Scene {
         
         // Player movement
         if (this.cursors.left.isDown) {
-            this.player.setVelocityX(-300);
+            this.player.setVelocityX(-600);
         } else if (this.cursors.right.isDown) {
-            this.player.setVelocityX(300);
+            this.player.setVelocityX(600);
         } else {
             this.player.setVelocityX(0);
         }
