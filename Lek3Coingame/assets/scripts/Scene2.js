@@ -152,7 +152,7 @@ class Scene2 extends Phaser.Scene {
         if (this.cursors.up.isDown && this.player.body.onFloor()) {
             this.player.setVelocityY(-950);
         }
-    }
+        this.player.setMaxVelocity(600, 950)    }
     //coin collection
     collectCoin(player, coin) {
         coin.disableBody(true, true); // Remove the coin from the screen

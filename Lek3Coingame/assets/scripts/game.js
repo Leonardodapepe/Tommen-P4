@@ -167,6 +167,9 @@ constructor(){
         if (this.cursors.up.isDown && this.player.body.onFloor()) {
             this.player.setVelocityY(-950);
         }
+        this.player.setMaxVelocity(600, 950)
+
+
         if (this.score >= 230) {
             // Transition to scene2
             this.scene.start('scene2');
