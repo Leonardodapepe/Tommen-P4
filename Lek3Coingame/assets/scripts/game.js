@@ -170,7 +170,7 @@ constructor(){
         this.player.setMaxVelocity(600, 950)
 
 
-        if (this.score >= 230) {
+        if (this.score >= 30) {
             // Transition to scene2
             this.scene.start('scene2');
         }

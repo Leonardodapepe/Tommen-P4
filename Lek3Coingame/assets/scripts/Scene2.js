@@ -6,7 +6,6 @@ class Scene2 extends Phaser.Scene {
 
 
     preload() {
-        this.load.spritesheet('coin', 'assets/img/coin_spritesheet.png', { frameWidth: 320, frameHeight: 320 });
         this.load.spritesheet('player', 'assets/img/egg.png', { frameWidth: 320, frameHeight: 320 });
 
         //Loading screen
@@ -70,66 +69,34 @@ class Scene2 extends Phaser.Scene {
         });
 
         //tilemap
-        this.load.tilemapTiledJSON('map', 'map.json');
+        this.load.tilemapTiledJSON('map2', 'map2.json');
         //tilemap img
-        this.load.image('tiles', 'grassMid.png');
+        this.load.image('tiles2', 'map2.png');
     }
 
     create() {
 
                 //tilemap
-                const map = this.make.tilemap({key:'map'});
-                const tileset = map.addTilesetImage('grassMid','tiles');
+                const map = this.make.tilemap({key:'map2'});
+                const tileset = map.addTilesetImage('spritesheet','tiles2');
                 const layer = map.createLayer('Tile Layer 1', tileset, 0,-350);
-                layer.setCollisionBetween (0, 1);
+                layer.setCollisionBetween (0, 100);
 
 
 
-        // Create an array to store coin sprites
-        this.coins = this.physics.add.group({
-            key: 'coin',
-            repeat: 23, // Number of coins to create
-            setXY: { x: 20, y: -400, stepX: 140 } // Position of the first coin and the distance between coins
-        });
-
-        // Set properties for each coin
-        this.coins.children.iterate(function (coin) {
-            coin.setScale(0.3); // Adjust scale as needed
-            coin.setGravityY(700);
-            this.physics.add.collider(coin,layer);
-            coin.setBounce(0.4);
-
-            // Define coin animation for each coin
-            coin.anims.create({
-                key: 'coinframes',
-                frames: this.anims.generateFrameNumbers('coin', { start: 0, end: 4 }), // Adjust frame range based on your spritesheet
-                frameRate: 3, // Adjust frame rate as needed
-                repeat: -1 // Loop indefinitely
-            });
-
-            // Play coin animation for each coin
-            coin.play('coinframes');
-        }, this);
 
         // Add player sprite
-        this.player = this.physics.add.sprite(100, 450, 'player');
-        this.player.setScale(1); // Adjust scale as needed
+        this.player = this.physics.add.sprite(2534/2, 5890, 'player');
+        this.player.setScale(0.2); // Adjust scale as needed
         this.player.setGravityY(650);
         this.player.setBounce(0.1);
         this.physics.add.collider(this.player,layer);
+               
 
         //camera
-        this.cameras.main.setZoom (0.5);
+        this.cameras.main.setZoom (1.5);
         this.cameras.main.startFollow(this.player);
 
-
-
-        // Initialize score
-        this.score = 0;
-        this.scoreText = this.add.text(window.innerWidth-150, 16, 'Score: 0', { fontSize: '128px', fill: '#fff' });
-
-        // Set up collision between player and coins
-        this.physics.add.overlap(this.player, this.coins, this.collectCoin, null, this);
 
         // Set up cursors for player input
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -152,11 +119,11 @@ class Scene2 extends Phaser.Scene {
         if (this.cursors.up.isDown && this.player.body.onFloor()) {
             this.player.setVelocityY(-950);
         }
-        this.player.setMaxVelocity(600, 950)    }
-    //coin collection
-    collectCoin(player, coin) {
-        coin.disableBody(true, true); // Remove the coin from the screen
-        this.score += 10; // Increase score by 10 for each coin collected
-        this.scoreText.setText('Score: ' + this.score); // Update score text
+        this.player.setMaxVelocity(600, 950)    
+
+         // Constrain player's x position
+         const minX = 0;
+         const maxX = 3150;
+         this.player.x = Phaser.Math.Clamp(this.player.x, minX, maxX);
     }
 }
