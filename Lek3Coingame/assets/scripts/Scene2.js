@@ -4,10 +4,7 @@ class Scene2 extends Phaser.Scene {
         super({ key:'scene2'});
 }
 
-
     preload() {
-        this.load.spritesheet('player', 'assets/img/egg.png', { frameWidth: 320, frameHeight: 320 });
-
         //Loading screen
         var progressBar = this.add.graphics();
         var progressBox = this.add.graphics();
@@ -72,6 +69,14 @@ class Scene2 extends Phaser.Scene {
         this.load.tilemapTiledJSON('map2', 'map2.json');
         //tilemap img
         this.load.image('tiles2', 'map2.png');
+
+        //player
+        this.load.spritesheet('player', 'assets/img/egg.png', { frameWidth: 320, frameHeight: 320 });
+
+        //jet images
+        this.load.sprite('jetl', 'assets/img/jet1.png');
+        this.load.sprite('jetr', 'assets/img/jet1t.png');
+
     }
 
     create() {
@@ -81,8 +86,6 @@ class Scene2 extends Phaser.Scene {
                 const tileset = map.addTilesetImage('spritesheet','tiles2');
                 const layer = map.createLayer('Tile Layer 1', tileset, 0,-350);
                 layer.setCollisionBetween (0, 100);
-
-
 
 
         // Add player sprite
@@ -100,12 +103,9 @@ class Scene2 extends Phaser.Scene {
 
         // Set up cursors for player input
         this.cursors = this.input.keyboard.createCursorKeys();
-
-
     }
 
     update() {
-        
         // Player movement
         if (this.cursors.left.isDown) {
             this.player.setVelocityX(-600);
@@ -115,11 +115,14 @@ class Scene2 extends Phaser.Scene {
             this.player.setVelocityX(0);
         }
 
+
         // Player jump
         if (this.cursors.up.isDown && this.player.body.onFloor()) {
             this.player.setVelocityY(-950);
         }
+
         this.player.setMaxVelocity(600, 950)    
+
 
          // Constrain player's x position
          const minX = 0;
