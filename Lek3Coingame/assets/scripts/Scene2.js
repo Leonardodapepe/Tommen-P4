@@ -130,6 +130,7 @@ class Scene2 extends Phaser.Scene {
          const minX = 0;
          const maxX = 3150;
          this.player.x = Phaser.Math.Clamp(this.player.x, minX, maxX);
+         console.log (this.player.y);
     }
 
 
@@ -137,7 +138,7 @@ class Scene2 extends Phaser.Scene {
         //decide where plane spawns
         createPlane() {
             let xCoord = Phaser.Math.Between(0, 100);
-            let yCoord = Phaser.Math.Between(5850, 5890);
+            let yCoord = Phaser.Math.Between(-300, 5890);
             let plane = this.physics.add.image(xCoord, yCoord, "plane2");
             plane.setScale(1.5);
             plane.setVelocityX(400);
@@ -155,7 +156,7 @@ class Scene2 extends Phaser.Scene {
     
         // Define a function to create a plane at random intervals
         createPlaneAtRandomIntervals() {
-            let interval = Phaser.Math.Between(3500, 6000); // Random interval between 3 to 5 seconds
+            let interval = Phaser.Math.Between(500, 1000); // Random interval between 3 to 5 seconds
     
             // Call createPlane after the interval and recursively call this function
             setTimeout(() => {
