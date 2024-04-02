@@ -130,33 +130,40 @@ class Scene2 extends Phaser.Scene {
          const minX = 0;
          const maxX = 3150;
          this.player.x = Phaser.Math.Clamp(this.player.x, minX, maxX);
-         console.log (this.player.y);
-    }
+        
+         //nextlevel when reaching right altitude
+         if (this.player.y <= 5000){
+                this.scene.start('scene3');
+            }
+        }
 
 
         //random jet generator
         //decide where plane spawns
         createPlane() {
-            let xCoord = Phaser.Math.Between(0, 100);
-            let yCoord = Phaser.Math.Between(-300, 5890);
-            let plane = this.physics.add.image(xCoord, yCoord, "plane2");
-            plane.setScale(1.5);
-            plane.setVelocityX(400);
-    
-            // Restart scene if player hits plane
-            this.physics.add.collider(this.player, plane, () => {
-                this.scene.restart();
-            });
-    
-            // Destroy the plane after 7.5 seconds
-            setTimeout(() => {
-                plane.destroy();
-            }, 7500);
+            if (this.scene.isActive('scene2')) {
+                let xCoord = Phaser.Math.Between(0, 100);
+                let yCoord = Phaser.Math.Between(-300, 5890);
+                let plane = this.physics.add.image(xCoord, yCoord, "plane2");
+                plane.setScale(1.5);
+                plane.setVelocityX(400);
+        
+                // Restart scene if player hits plane
+                this.physics.add.collider(this.player, plane, () => {
+                    this.scene.restart();
+                });
+        
+                // Destroy the plane after 7.5 seconds
+                setTimeout(() => {
+                    plane.destroy();
+                }, 7500);
+            }
         }
+        
     
         // Define a function to create a plane at random intervals
         createPlaneAtRandomIntervals() {
-            let interval = Phaser.Math.Between(500, 1000); // Random interval between 3 to 5 seconds
+            let interval = Phaser.Math.Between(550, 1000); // Random interval between 3 to 5 seconds
     
             // Call createPlane after the interval and recursively call this function
             setTimeout(() => {
@@ -165,4 +172,3 @@ class Scene2 extends Phaser.Scene {
             }, interval);
         }
 }
-
