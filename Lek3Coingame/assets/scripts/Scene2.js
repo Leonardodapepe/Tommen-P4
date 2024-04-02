@@ -1,6 +1,3 @@
-
-
-var plane;
 class Scene2 extends Phaser.Scene {
 
     constructor() {
@@ -81,6 +78,8 @@ class Scene2 extends Phaser.Scene {
         this.load.image('plane2', 'assets/img/jet1t.png');
     }
 
+
+
     create() {
 
         //tilemap
@@ -105,42 +104,8 @@ class Scene2 extends Phaser.Scene {
 
         // Set up cursors for player input
         this.cursors = this.input.keyboard.createCursorKeys();
-
-
-        //random jet generator
-        //decide where plane spawns
-        function createplane(scene) {
-            let xCoord = Phaser.Math.Between(0, 100);
-            let yCoord = Phaser.Math.Between(5850, 5890);
-            let plane = scene.physics.add.image(xCoord, yCoord, "plane2");
-            plane.setScale(1.5);
-            plane.setVelocityX(400);
-            
-            // Destroy the plane after 7.5 seconds
-            scene.time.delayedCall(7500, function() {
-                plane.destroy();
-            }, [], scene);
-        }
-            //restarts scene if player hiits plane
-            this.physics.add.collider(this.player,this.plane,  () => {
-                this.scene.restart();
-            });
-
-        // Define a function to create a plane at random intervals
-        function createplaneAtRandomIntervals(scene) {
-            let interval = Phaser.Math.Between(3500, 6000); // Random interval between 3 to 5 seconds
-            scene.time.addEvent({
-                delay: interval,
-                callback: function () {
-                    createplane(scene);
-                    
-                    // Call this function recursively to create plane at another random interval
-                    createplaneAtRandomIntervals(scene);
-                },
-                loop: false
-            });
-        }
-        createplaneAtRandomIntervals(this);
+        
+        this.createPlaneAtRandomIntervals();
     }
 
     update() {
@@ -167,4 +132,36 @@ class Scene2 extends Phaser.Scene {
          this.player.x = Phaser.Math.Clamp(this.player.x, minX, maxX);
     }
 
+
+        //random jet generator
+        //decide where plane spawns
+        createPlane() {
+            let xCoord = Phaser.Math.Between(0, 100);
+            let yCoord = Phaser.Math.Between(5850, 5890);
+            let plane = this.physics.add.image(xCoord, yCoord, "plane2");
+            plane.setScale(1.5);
+            plane.setVelocityX(400);
+    
+            // Restart scene if player hits plane
+            this.physics.add.collider(this.player, plane, () => {
+                this.scene.restart();
+            });
+    
+            // Destroy the plane after 7.5 seconds
+            setTimeout(() => {
+                plane.destroy();
+            }, 7500);
+        }
+    
+        // Define a function to create a plane at random intervals
+        createPlaneAtRandomIntervals() {
+            let interval = Phaser.Math.Between(3500, 6000); // Random interval between 3 to 5 seconds
+    
+            // Call createPlane after the interval and recursively call this function
+            setTimeout(() => {
+                this.createPlane();
+                this.createPlaneAtRandomIntervals();
+            }, interval);
+        }
 }
+
