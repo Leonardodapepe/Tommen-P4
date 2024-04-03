@@ -69,23 +69,26 @@ preload(){
      this.load.spritesheet('player', 'assets/img/jet1.png', { frameWidth: 320, frameHeight: 320 });
 
      //tnt image
-     this.load.image('tnt', 'assets/img/tnt.png')
+     this.load.image('tnt', 'assets/img/tnt.png');
      //nuke and explosion
-     this.load.image('nuke', 'assets/img/nuke.png')
-     this.load.image('bang', 'assets/img/explosion.png')
+     this.load.image('nuke', 'assets/img/nuke.png');
+     this.load.image('bang', 'assets/img/explosion.png');
+     this.load.audio('bangsound', 'assets/sound/explosion.mp3');
+     //shelter
+     this.load.image('shelter', 'assets/img/shelter.png');
 
         //tilemap
         this.load.image ("tiles3", "map3.png");
         this.load.tilemapTiledJSON("map3","map3.json");
 }
 
-//map explodes in x time run for your life map
+
 
 create() {
     //tilemap
     const map = this.make.tilemap({key: "map3"});
     const tileset = map.addTilesetImage("spritesheet","tiles3");
-    const layer = map.createLayer('Tile Layer 1', tileset, 0,-1200);
+    const layer = map.createLayer('Tile Layer 1', tileset, -400,-1200);
     layer.setCollisionBetween (0, 100);
 
 
@@ -97,9 +100,38 @@ create() {
     this.player.setBounce(0.1);
     this.physics.add.collider(this.player,layer);
 
+    //nuke
+    this.nuke = this.add.image(30, 50, 'nuke')
+    this.nuke.setScale(2)
+    this.nuke.setDepth(-2);
+        // Create timer text
+        this.timerText = this.add.text(40, -47, 'Time: 30', { font: '20px Arial', fill: '#FF0000' }).setOrigin(0.5);
+        this.timerText.setScale (0.9);
+        this.timerText.setDepth(-1);
+
+        // Set up initial timer duration
+        this.timerDuration = 30;
+
+        // Set up timer event
+        this.timerEvent = this.time.addEvent({
+            delay: 1000,
+            callback: this.updateTimer,
+            callbackScope: this,
+            loop: true
+        });
+
+    //shelter
+    this.shelter = this.add.image (5400, 0, 'shelter');
+    this.shelter.setScale(3);
+    this.shelter.setDepth(-1);
+
     //tnt
-    this.tnt = this.add.sprite (2925, -170, "tnt");
+    this.tnt = this.physics.add.sprite (2925-400, -170, "tnt");
     this.tnt.setScale(0.5);
+    this.tnt.setImmovable(true);
+    this.physics.add.overlap(this.player, this.tnt, this.collectTnt, null, this);
+
+    
 
     //camera
     this.cameras.main.setZoom (1);
@@ -109,42 +141,95 @@ create() {
     // Set up cursors for player input
     this.cursors = this.input.keyboard.createCursorKeys();
     
-        // Set up collision between player and tnt
-        this.physics.add.overlap(this.player, this.tnt, this.collectTnt, null, this, console.log("debug"));
+
 }
-
-
-
-
-
-update() {
-// Player movement
-if (this.cursors.left.isDown) {
-    this.player.setVelocityX(-600);
-} else if (this.cursors.right.isDown) {
-    this.player.setVelocityX(600);
-} else {
-    this.player.setVelocityX(0);
-}
-
-// Constrain player's x position
-const minX = 50;
-const maxX = 6400;
-this.player.x = Phaser.Math.Clamp(this.player.x, minX, maxX);
-
-// Player jump
-if (this.cursors.up.isDown && this.player.body.onFloor()) {
-    this.player.setVelocityY(-650);
-}
-//defines player's max velocity horizontal / vertical
-this.player.setMaxVelocity(600, 950);
-}
-
+//tnt collect function
 collectTnt(player, tnt) {
-    tnt.disableBody(true, true); // Remove the coin from the screen
-    this.score += 10; // Increase score by 10 for each coin collected
-    this.scoreText.setText('Score: ' + this.score); // Update score text
-    console.log("debug");
+    // Log debug message
+    console.log("TNT collected");
+    // Trigger true/false statement or additional logic
+    this.tntCollected = true;
+    // Destroy the TNT object
+    tnt.destroy();
 }
 
+//nuke timer
+updateTimer() {
+    this.timerDuration--;
+
+    // Update timer text
+    this.timerText.setText(`Time: ${this.timerDuration}`);
+
+    if (this.timerDuration <= 0) {
+        // Stop the timer
+        this.timerEvent.remove(false);
+        //exlopion image
+        const explosion = this.add.image(this.nuke.x, this.nuke.y-600, 'bang').setScale(10).setDepth(4);
+        //explosion sound
+        const explosionSound = this.sound.add('bangsound', { volume: 0.5 });
+        explosionSound.play();
+
+        // Restart the scene after 30 seconds
+        this.time.delayedCall(3000, () => {
+            this.scene.restart();
+        }, [], this);
+    }
+}
+
+
+
+    update() {
+    // Player movement
+    if (this.cursors.left.isDown) {
+        this.player.setVelocityX(-600);
+    } else if (this.cursors.right.isDown) {
+        this.player.setVelocityX(600);
+    } else {
+        this.player.setVelocityX(0);
+    }
+
+    
+    // Constrain player's x position
+    const minX = 50;
+    const maxX = 5900;
+    this.player.x = Phaser.Math.Clamp(this.player.x, minX, maxX);
+
+    // Player jump
+    if (this.cursors.up.isDown && this.player.body.onFloor()) {
+        this.player.setVelocityY(-650);
+    }
+    //defines player's max velocity horizontal / vertical
+    this.player.setMaxVelocity(600, 950);
+
+    //nuke defuse
+    const distanceX = Math.abs(this.player.x - this.nuke.x);
+    if (this.tntCollected && distanceX < 100) {
+        console.log("Player returned to nuke with TNT");
+
+        // Stop the nuke timer
+        this.timerEvent.remove(false);
+        this.nukedefused = true;
+        }
+
+        //can player procceed to next level
+        const distanceX2 = Math.abs(this.player.x - this.shelter.x);
+        if (this.nukedefused && distanceX2 < 50) {
+            console.log("Player can procceed");
+            }
+            
+            // Check if the player can't proceed without defusing the bomb
+        if (!this.nukedefused && distanceX2 < 50) {
+        // Add text indicating that the player can't proceed without defusing the bomb
+        if (!this.warningText) {
+            this.warningText = this.add.text(this.player.x, this.player.y - 50, "You can't proceed without defusing the bomb", { font: '16px Arial', fill: '#ffffff' }).setOrigin(0.5);
+            }
+        } else {
+        // Remove warning text if exists
+        if (this.warningText) {
+            this.warningText.destroy();
+            this.warningText = null;
+            }
+        }
+            
+    }
 }
