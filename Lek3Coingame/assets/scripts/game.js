@@ -68,7 +68,7 @@ constructor(){
             loadingText.destroy();
             percentText.destroy();
             assetText.destroy();
-            console.log("complete");
+            console.log("complete lvl1");
         });
 
         //tilemap
@@ -175,7 +175,7 @@ constructor(){
             this.scene.start('scene2');
         }
     }
-
+    //collect coin function
     collectCoin(player, coin) {
         coin.disableBody(true, true); // Remove the coin from the screen
         this.score += 10; // Increase score by 10 for each coin collected
