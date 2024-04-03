@@ -4,13 +4,11 @@ class Scene3 extends Phaser.Scene {
         super({ key:'scene3'});
 }
 preload(){
-
             //Loading screen
             var progressBar = this.add.graphics();
             var progressBox = this.add.graphics();
             progressBox.fillStyle(0x222222, 0.8);
             progressBox.fillRect(width/2-160,height/2-30,320,50);
-            
             var width = this.cameras.main.width;
             var height = this.cameras.main.height;
             var loadingText = this.make.text({
@@ -23,7 +21,6 @@ preload(){
                 }
             });
             loadingText.setOrigin(0.5, 0.5);
-            
             var percentText = this.make.text({
                 x: width / 2,
                 y: height / 2 - 5,
@@ -45,14 +42,12 @@ preload(){
                 }
             });
             assetText.setOrigin(0.5, 0.5);
-            
             this.load.on('progress', function (value) {
                 percentText.setText(parseInt(value * 100) + '%');
                 progressBar.clear();
                 progressBar.fillStyle(0xffffff, 1);
                 progressBar.fillRect(width/2-147.5,height/2-30,320*value,50);
             });
-            
             this.load.on('fileprogress', function (file) {
                 assetText.setText('Loading asset: ' + file.key);
             });
@@ -64,8 +59,8 @@ preload(){
                 assetText.destroy();
                 console.log("complete");
             });
-
-     //player
+            //loading bar up
+    //player
      this.load.spritesheet('player', 'assets/img/jet1.png', { frameWidth: 320, frameHeight: 320 });
 
      //tnt image
@@ -82,16 +77,12 @@ preload(){
         this.load.tilemapTiledJSON("map3","map3.json");
 }
 
-
-
 create() {
     //tilemap
     const map = this.make.tilemap({key: "map3"});
     const tileset = map.addTilesetImage("spritesheet","tiles3");
     const layer = map.createLayer('Tile Layer 1', tileset, -400,-1200);
     layer.setCollisionBetween (0, 100);
-
-
 
     // Add player sprite
     this.player = this.physics.add.sprite(150, 0, 'player');
@@ -131,17 +122,12 @@ create() {
     this.tnt.setImmovable(true);
     this.physics.add.overlap(this.player, this.tnt, this.collectTnt, null, this);
 
-    
-
     //camera
     this.cameras.main.setZoom (1);
     this.cameras.main.startFollow(this.player);
 
-
     // Set up cursors for player input
     this.cursors = this.input.keyboard.createCursorKeys();
-    
-
 }
 //tnt collect function
 collectTnt(player, tnt) {
@@ -159,7 +145,7 @@ updateTimer() {
 
     // Update timer text
     this.timerText.setText(`Time: ${this.timerDuration}`);
-
+    //nuke go bang
     if (this.timerDuration <= 0) {
         // Stop the timer
         this.timerEvent.remove(false);
@@ -168,15 +154,12 @@ updateTimer() {
         //explosion sound
         const explosionSound = this.sound.add('bangsound', { volume: 0.5 });
         explosionSound.play();
-
         // Restart the scene after 30 seconds
         this.time.delayedCall(3000, () => {
             this.scene.restart();
         }, [], this);
     }
 }
-
-
 
     update() {
     // Player movement
@@ -223,13 +206,13 @@ updateTimer() {
         if (!this.warningText) {
             this.warningText = this.add.text(this.player.x, this.player.y - 50, "You can't proceed without defusing the bomb", { font: '16px Arial', fill: '#ffffff' }).setOrigin(0.5);
             }
-        } else {
+        } else 
+        {
         // Remove warning text if exists
         if (this.warningText) {
             this.warningText.destroy();
             this.warningText = null;
             }
-        }
-            
+        } 
     }
 }
