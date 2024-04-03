@@ -79,11 +79,11 @@ constructor(){
 
     create() {
 
-                //tilemap
-                const map = this.make.tilemap({key:'map'});
-                const tileset = map.addTilesetImage('grassMid','tiles');
-                const layer = map.createLayer('Tile Layer 1', tileset, 0,-350);
-                layer.setCollisionBetween (0, 1);
+        //tilemap
+        const map = this.make.tilemap({key:'map'});
+        const tileset = map.addTilesetImage('grassMid','tiles');
+        const layer = map.createLayer('Tile Layer 1', tileset, 0,-350);
+        layer.setCollisionBetween (0, 1);
 
 
         //background

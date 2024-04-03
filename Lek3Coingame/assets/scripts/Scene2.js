@@ -65,10 +65,6 @@ class Scene2 extends Phaser.Scene {
             console.log("complete");
         });
 
-        //tilemap
-        this.load.tilemapTiledJSON('map2', 'map2.json');
-        //tilemap img
-        this.load.image('tiles2', 'map2.png');
 
         //player
         this.load.spritesheet('player', 'assets/img/egg.png', { frameWidth: 320, frameHeight: 320 });
@@ -76,6 +72,11 @@ class Scene2 extends Phaser.Scene {
         //jet images
         this.load.image('plane', 'assets/img/jet1.png');
         this.load.image('plane2', 'assets/img/jet1t.png');
+
+        //tilemap
+        this.load.tilemapTiledJSON('map2', 'map2.json');
+        //tilemap img
+        this.load.image('tiles2', 'map2.png');
     }
 
 
@@ -132,7 +133,7 @@ class Scene2 extends Phaser.Scene {
          this.player.x = Phaser.Math.Clamp(this.player.x, minX, maxX);
         
          //nextlevel when reaching right altitude
-         if (this.player.y <= 5000){
+         if (this.player.y <= 5500){ //change to 500
                 this.scene.start('scene3');
             }
         }
