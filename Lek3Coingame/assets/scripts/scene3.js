@@ -69,6 +69,8 @@ preload(){
      this.load.image('nuke', 'assets/img/nuke.png');
      this.load.image('bang', 'assets/img/explosion.png');
      this.load.audio('bangsound', 'assets/sound/explosion.mp3');
+     //small explosion
+     this.load.image('smlbang', 'assets/img/smallexplosion.png');
      //shelter
      this.load.image('shelter', 'assets/img/shelter.png'); 
      //tornado
@@ -120,12 +122,13 @@ create() {
 
     //tnt
     this.tnt = this.physics.add.sprite (2525, -170, "tnt");
+    this.physics.add.overlap(this.player, this.tnt, this.collectTnt, null, this);
     this.tnt.setScale(0.5);
     this.tnt.setImmovable(true);
 
 
     //tornado 1 & 2
-    this.tornadol = this.physics.add.sprite (2100,0, "tornado");
+    this.tornadol = this.physics.add.sprite (2100,-250, "tornado");
 
 
     //camera
@@ -141,6 +144,7 @@ collectTnt(player, tnt) {
     console.log("TNT collected");
     // Trigger true/false statement or additional logic
     this.tntCollected = true;
+    this.defused = 0;
     // Destroy the TNT object
     tnt.destroy();
 }
@@ -165,6 +169,8 @@ updateTimer() {
             this.scene.restart();
         }, [], this);
     }
+    //defused false
+    
 }
 
     update() {
@@ -191,8 +197,16 @@ updateTimer() {
 
     //nuke defuse
     const distanceX = Math.abs(this.player.x - this.nuke.x);
-    if (this.tntCollected && distanceX < 100) {
+    
+    if (this.tntCollected && distanceX < 100&& this.defused == 0) {
         console.log("Player returned to nuke with TNT");
+        const explosion = this.add.image(this.nuke.x, this.nuke.y-40, 'smlbang').setScale(1).setDepth(4);
+        const explosionSound = this.sound.add('bangsound', { volume: 0.2 });
+        explosionSound.play();
+        this.defused ++;
+        this.time.delayedCall(1500, () => {
+            explosion.destroy();
+        }, [], this);
 
         // Stop the nuke timer
         this.timerEvent.remove(false);
@@ -211,8 +225,7 @@ updateTimer() {
         if (!this.warningText) {
             this.warningText = this.add.text(this.player.x, this.player.y - 50, "You can't proceed without defusing the bomb", { font: '16px Arial', fill: '#ffffff' }).setOrigin(0.5);
             }
-        } else 
-        {
+        } else {
         // Remove warning text if exists
         if (this.warningText) {
             this.warningText.destroy();
@@ -223,11 +236,12 @@ updateTimer() {
         //tornado trigger
         const reverse1 = Math.abs(this.player.x - this.tornadol.x);
 
-        if (reverse1 < 250&& this.player.y > -300) {
-            this.player.setGravityY(-300);
+        if (reverse1 < 250&& this.player.y > -550) {
+            this.player.setGravityY(-450);
             }
             else {
                 this.player.setGravityY(650);
             }
     }
+    
 }
