@@ -62,7 +62,7 @@ class Scene2 extends Phaser.Scene {
             loadingText.destroy();
             percentText.destroy();
             assetText.destroy();
-            console.log("complete");
+            console.log("complete lvl2");
         });
 
 

@@ -57,7 +57,7 @@ preload(){
                 loadingText.destroy();
                 percentText.destroy();
                 assetText.destroy();
-                console.log("complete");
+                console.log("complete lvl3");
             });
             //loading bar up
     //player
@@ -213,10 +213,11 @@ updateTimer() {
         this.nukedefused = true;
         }
 
-        //can player procceed to next level
+        //can player proceed to next level
         const distanceX2 = Math.abs(this.player.x - this.shelter.x);
         if (this.nukedefused && distanceX2 < 50) {
-            console.log("Player can procceed");
+            this.scene.start('scene4');
+
             }
             
             // Check if the player can't proceed without defusing the bomb

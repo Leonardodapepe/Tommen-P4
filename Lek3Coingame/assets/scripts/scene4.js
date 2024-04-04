@@ -11,11 +11,11 @@ class Scene4 extends Phaser.Scene {
 
     create(){
          // Add player sprite
-         this.player = this.physics.add.sprite(2534/2, 5890, 'player');
+         this.player = this.physics.add.sprite(0, 0, 'player');
          this.player.setScale(0.2); // Adjust scale as needed
          this.player.setGravityY(650);
          this.player.setBounce(0.1);
-         this.physics.add.collider(this.player,layer);
+        // this.physics.add.collider(this.player,layer);
             //camera
             this.cameras.main.setZoom (1);
             this.cameras.main.startFollow(this.player);
