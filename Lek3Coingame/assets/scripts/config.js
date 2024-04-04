@@ -3,7 +3,7 @@ const config = {
     width: window.innerWidth,
     height: window.innerHeight,
     backgroundColor: '#4488aa',
-    scene: [Menu, Game, Scene2,Scene3,],
+    scene: [Menu, Game, Scene2,Scene3,Scene4],
     physics: {
         default: 'arcade',
         arcade: { debug: true },
