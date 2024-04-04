@@ -1,3 +1,5 @@
+Relevant information only for Lek3Coingame
+
 Lvl 1 
 The start
 Basic platformer where you collect 23 coins to proceed
