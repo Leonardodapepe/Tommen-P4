@@ -70,7 +70,9 @@ preload(){
      this.load.image('bang', 'assets/img/explosion.png');
      this.load.audio('bangsound', 'assets/sound/explosion.mp3');
      //shelter
-     this.load.image('shelter', 'assets/img/shelter.png');
+     this.load.image('shelter', 'assets/img/shelter.png'); 
+     //tornado
+     this.load.image('tornado', 'assets/img/tornado.png');
 
         //tilemap
         this.load.image ("tiles3", "map3.png");
@@ -117,10 +119,14 @@ create() {
     this.shelter.setDepth(-1);
 
     //tnt
-    this.tnt = this.physics.add.sprite (2925-400, -170, "tnt");
+    this.tnt = this.physics.add.sprite (2525, -170, "tnt");
     this.tnt.setScale(0.5);
     this.tnt.setImmovable(true);
-    this.physics.add.overlap(this.player, this.tnt, this.collectTnt, null, this);
+
+
+    //tornado 1 & 2
+    this.tornadol = this.physics.add.sprite (2100,0, "tornado");
+
 
     //camera
     this.cameras.main.setZoom (1);
@@ -171,7 +177,6 @@ updateTimer() {
         this.player.setVelocityX(0);
     }
 
-    
     // Constrain player's x position
     const minX = 50;
     const maxX = 5900;
@@ -213,6 +218,16 @@ updateTimer() {
             this.warningText.destroy();
             this.warningText = null;
             }
-        } 
+        }
+
+        //tornado trigger
+        const reverse1 = Math.abs(this.player.x - this.tornadol.x);
+
+        if (reverse1 < 250&& this.player.y > -300) {
+            this.player.setGravityY(-300);
+            }
+            else {
+                this.player.setGravityY(650);
+            }
     }
 }
