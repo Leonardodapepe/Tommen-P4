@@ -116,7 +116,7 @@ class Scene2 extends Phaser.Scene {
         this.jetpack.setImmovable(true);
         this.jetpackCollected = false;
         
-        this.jetpackp = this.add.image(this.player.x, 2000, 'jetpack').setScale(0.25).setDepth(-1);
+        this.jetpackp = this.add.image(10000, this.player.y, 'jetpack').setScale(0.25).setDepth(-1);
         
         this.createPlaneAtRandomIntervals();
     }

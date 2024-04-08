@@ -6,16 +6,42 @@ class Scene4 extends Phaser.Scene {
     preload(){
         //player
         this.load.spritesheet('player', 'assets/img/egg.png', { frameWidth: 320, frameHeight: 320 });
+
+        //acid
+        this.load.image('acid', 'assets/gifs/acid.gif')
+
+        //tilemap
+        this.load.tilemapTiledJSON('map4', 'map4.json');
+        //tilemap img
+        this.load.image('tiles4', 'map4.png');
+
+        //fish
+        this.load.image('fish', 'assets/img/fish.png');
     }
 
 
     create(){
+
+        //tilemap
+        const map = this.make.tilemap({key:'map4'});
+        const tileset = map.addTilesetImage('map4','tiles4');
+        const layer = map.createLayer('Tile Layer 1', tileset, -750,-1650);
+        layer.setCollisionBetween (0, 100);
+
+        //acid
+        this.acid = this.physics.add.image (2000,530, 'acid');
+        this.acid.setDepth(-1);
+        this.acid.setScale(1.74,1);
+
+        //acid fish
+        this.fish = this.physics.add.image (2000, 530, 'fish');
+
          // Add player sprite
          this.player = this.physics.add.sprite(0, 0, 'player');
          this.player.setScale(0.2); // Adjust scale as needed
          this.player.setGravityY(650);
          this.player.setBounce(0.1);
-        // this.physics.add.collider(this.player,layer);
+         this.physics.add.collider(this.player,layer);
             //camera
             this.cameras.main.setZoom (1);
             this.cameras.main.startFollow(this.player);

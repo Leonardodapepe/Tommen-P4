@@ -172,7 +172,7 @@ constructor(){
 
         if (this.score >= 30) {
             // Transition to scene2
-            this.scene.start('scene2');
+            this.scene.start('scene4');
         }
     }
     //collect coin function

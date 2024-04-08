@@ -1,3 +1,4 @@
+window.onload = function(){
 const config = {
     type: Phaser.AUTO,
     width: window.innerWidth,
@@ -18,3 +19,4 @@ const config = {
 const game = new Phaser.Game(config);
 
 
+};
