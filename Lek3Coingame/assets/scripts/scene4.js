@@ -17,6 +17,9 @@ class Scene4 extends Phaser.Scene {
 
         //fish
         this.load.image('fish', 'assets/img/fish.png');
+
+        //shelter
+         this.load.image('shelter', 'assets/img/shelter.png'); 
     }
 
 
@@ -28,13 +31,19 @@ class Scene4 extends Phaser.Scene {
         const layer = map.createLayer('Tile Layer 1', tileset, -750,-1650);
         layer.setCollisionBetween (0, 100);
 
+        //shelter
+        this.shelter = this.add.image (0, 200, 'shelter');
+        this.shelter.setScale(3);
+        this.shelter.setDepth(-1);
+
         //acid
         this.acid = this.physics.add.image (2000,530, 'acid');
         this.acid.setDepth(-1);
         this.acid.setScale(1.74,1);
 
         //acid fish
-        this.fish = this.physics.add.image (2000, 530, 'fish');
+        this.fish = this.physics.add.image (1600, 530, 'fish');
+        this.fish.setVelocityX(100);
 
          // Add player sprite
          this.player = this.physics.add.sprite(0, 0, 'player');
@@ -61,6 +70,15 @@ class Scene4 extends Phaser.Scene {
         } else {
             this.player.setVelocityX(0);
         }
+        console.log (this.fish.x);
+        if (this.fish.x > 2254){
+            this.fish.setVelocityX(-100);
+            this.fish.flipX=true
+        }
+        if (this.fish.x < 1750){
+            this.fish.setVelocityX (100);
+            this.fish.flipX=false
+        }
 
         // Player jump
         if (this.cursors.up.isDown && this.player.body.onFloor()) {
@@ -68,6 +86,16 @@ class Scene4 extends Phaser.Scene {
         }
         //defines player's max velocity horizontal / vertical
         this.player.setMaxVelocity(600, 950)    
+
+        // Constrain player's x position
+        const minX = -550;
+        const maxX = 5500;
+        this.player.x = Phaser.Math.Clamp(this.player.x, minX, maxX);
+
+        // Constrain fish's x position
+        const fminX = 1586;
+        const fmaxX = 2354;
+        this.fish.x = Phaser.Math.Clamp(this.fish.x, fminX, fmaxX);
     }
 
 
