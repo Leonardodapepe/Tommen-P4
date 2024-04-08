@@ -68,6 +68,9 @@ class Scene2 extends Phaser.Scene {
 
         //player
         this.load.spritesheet('player', 'assets/img/egg.png', { frameWidth: 320, frameHeight: 320 });
+            //player jetpack
+            this.load.image('jetpack', 'assets/img/jetpackoff.png');
+            this.load.image('jetpackon','assets/img/jetpackon.png')
 
         //jet images
         this.load.image('plane', 'assets/img/jet1.png');
@@ -106,8 +109,27 @@ class Scene2 extends Phaser.Scene {
         // Set up cursors for player input
         this.cursors = this.input.keyboard.createCursorKeys();
         
+        //jetpack
+        this.jetpack = this.physics.add.sprite (1069, 5890, "jetpack");
+        this.physics.add.overlap(this.player, this.jetpack, this.collectJetpack, null, this);
+        this.jetpack.setScale(0.25);
+        this.jetpack.setImmovable(true);
+        this.jetpackCollected = false;
+        
+        this.jetpackp = this.add.image(this.player.x, 2000, 'jetpack').setScale(0.25).setDepth(-1);
+        
         this.createPlaneAtRandomIntervals();
     }
+    collectJetpack(player, jetpack) {
+        // Log debug message
+        console.log("jetpack collected");
+        // Trigger true/false statement or additional logic
+        this.jetpackCollected = true;
+        // Destroy the jetpack object
+        jetpack.destroy();
+    }
+
+
 
     update() {
         // Player movement
@@ -123,6 +145,21 @@ class Scene2 extends Phaser.Scene {
         if (this.cursors.up.isDown && this.player.body.onFloor()) {
             this.player.setVelocityY(-950);
         }
+
+        //jetpack
+        if (this.jetpackCollected && this.cursors.up.isDown){
+            this.player.setVelocityY(-400);
+            this.jetpackp.setTexture('jetpackon');
+        }
+        else {
+            this.jetpackp.setTexture('jetpack');
+        }
+        //jetpack model
+        if (this.jetpackCollected){
+            this.jetpackp.x = this.player.x -25;
+            this.jetpackp.y = this.player.y +10;
+            }
+
         //defines player's max velocity horizontal / vertical
         this.player.setMaxVelocity(600, 950)    
 
@@ -133,7 +170,7 @@ class Scene2 extends Phaser.Scene {
          this.player.x = Phaser.Math.Clamp(this.player.x, minX, maxX);
         
          //nextlevel when reaching right altitude
-         if (this.player.y <= 5500){ //change to 500
+         if (this.player.y <= 500){ //change to 500
                 this.scene.start('scene3');
             }
         }
@@ -152,6 +189,7 @@ class Scene2 extends Phaser.Scene {
                 // Restart scene if player hits plane
                 this.physics.add.collider(this.player, plane, () => {
                     this.scene.restart();
+                    this.jetpackCollected = false;
                 });
         
                 // Destroy the plane after 7.5 seconds

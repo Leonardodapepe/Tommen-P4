@@ -167,6 +167,7 @@ updateTimer() {
         // Restart the scene after 30 seconds
         this.time.delayedCall(3000, () => {
             this.scene.restart();
+            this.tntCollected = false;
         }, [], this);
     }
     //defused false
