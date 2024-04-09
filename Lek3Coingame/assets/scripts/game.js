@@ -10,6 +10,7 @@ constructor(){
         this.load.spritesheet('coin', 'assets/img/coin_spritesheet.png', { frameWidth: 320, frameHeight: 320 });
         this.load.spritesheet('player', 'assets/img/egg.png', { frameWidth: 320, frameHeight: 320 });
         this.load.image('lava', 'assets/img/lava.png');
+        this.load.image('move', 'assets/img/move.png');
 
         //Loading screen
         var progressBar = this.add.graphics();
@@ -76,8 +77,34 @@ constructor(){
         //tilemap img
         this.load.image('tiles', 'grassMid.png');
     }
-
+    moveright(){
+        this.player.setVelocityX(600);
+    }
     create() {
+
+        //mobile controls
+        this.right = this.add.sprite(window.innerWidth * 1.35, window.innerHeight, 'move').setInteractive();
+        this.right.setScrollFactor (0);
+        this.right.setScale(0.33);
+        this.right.setDepth(15);
+        this.right.on("pointerdown", function(){
+            this.moveright()
+        }).on("pointerup", function(){
+            this.player.setVelocityX(0);
+        });
+
+        this.left = this.add.image(window.innerWidth * 1.05, window.innerHeight, 'move')
+        this.left.setScrollFactor (0);
+        this.left.setScale(0.33);
+        this.left.setDepth(15);    
+        this.left.angle=180
+
+        this.up = this.add.image(window.innerWidth * 1.20, window.innerHeight*0.6, 'move')
+        this.up.setScrollFactor (0);
+        this.up.setScale(0.33);
+        this.up.setDepth(15);    
+        this.up.angle=-90
+
 
         //tilemap
         const map = this.make.tilemap({key:'map'});
@@ -152,8 +179,9 @@ constructor(){
 
     }
 
+
     update() {
-        
+
         // Player movement
         if (this.cursors.left.isDown) {
             this.player.setVelocityX(-600);

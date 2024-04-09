@@ -42,6 +42,7 @@ class Scene4 extends Phaser.Scene {
         this.acid = this.physics.add.image (2000,530, 'acid');
         this.acid.setDepth(-1);
         this.acid.setScale(1.74,1);
+       this.acid.postFX.addGlow();
 
         //acid fish
         this.fish = this.physics.add.image (1600, 530, 'fish');

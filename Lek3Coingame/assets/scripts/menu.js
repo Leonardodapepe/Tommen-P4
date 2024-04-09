@@ -7,15 +7,26 @@ class Menu extends Phaser.Scene
 
     create ()
     {   //press to continue text
-        this.scoreText = this.add.text(16, 16, 'Press Space to continue..', { fontSize: '32px', fill: '#fff' });
+        this.scoreText = this.add.text(16, 16, 'Press to continue..', { fontSize: '32px', fill: '#fff' });
+
+        
+
+
     }
 
     update ()
     {
         //skip scene when press space
-        if(this.input.keyboard.checkDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE), 500)){
+        if(this.input.activePointer.leftButtonDown()){
             this.scene.start('Gamescene');
+            if (IS_TOUCH){
+                console.log("phone")
+            }
+            else{
+                console.log("PC")
+            }
         }
+        
     }
 
     
