@@ -80,31 +80,44 @@ constructor(){
     moveright(){
         this.player.setVelocityX(600);
     }
+    moveleft(){
+        this.player.setVelocityX(-600);
+    }
+    moveup(){
+        if(this.player.body.onFloor()){
+        this.player.setVelocityY(-950);
+    }
+    }
     create() {
 
         //mobile controls
+        if (IS_TOUCH){
         this.right = this.add.sprite(window.innerWidth * 1.35, window.innerHeight, 'move').setInteractive();
         this.right.setScrollFactor (0);
         this.right.setScale(0.33);
         this.right.setDepth(15);
         this.right.on("pointerdown", function(){
             this.moveright()
-        }).on("pointerup", function(){
-            this.player.setVelocityX(0);
-        });
+        },this)
 
-        this.left = this.add.image(window.innerWidth * 1.05, window.innerHeight, 'move')
+        this.left = this.add.image(window.innerWidth * 1.05, window.innerHeight, 'move').setInteractive();
         this.left.setScrollFactor (0);
         this.left.setScale(0.33);
         this.left.setDepth(15);    
         this.left.angle=180
+        this.left.on("pointerdown", function(){
+            this.moveleft()
+        },this)
 
-        this.up = this.add.image(window.innerWidth * 1.20, window.innerHeight*0.6, 'move')
+        this.up = this.add.image(window.innerWidth * 1.20, window.innerHeight*0.6, 'move').setInteractive();
         this.up.setScrollFactor (0);
         this.up.setScale(0.33);
         this.up.setDepth(15);    
         this.up.angle=-90
-
+        this.up.on("pointerdown", function(){
+            this.moveup()
+        },this)
+    }
 
         //tilemap
         const map = this.make.tilemap({key:'map'});
@@ -200,7 +213,7 @@ constructor(){
 
         if (this.score >= 30) {
             // Transition to scene2
-            this.scene.start('scene4');
+            this.scene.start('scene2');
         }
     }
     //collect coin function

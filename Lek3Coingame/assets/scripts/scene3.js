@@ -79,9 +79,56 @@ preload(){
         //tilemap
         this.load.image ("tiles3", "map3.png");
         this.load.tilemapTiledJSON("map3","map3.json");
+    
+     //move
+     this.load.image('move', 'assets/img/move.png');
 }
 
+moveright(){
+    this.player.setVelocityX(600);
+}
+moveleft(){
+    this.player.setVelocityX(-600);
+}
+moveup(){
+    if(this.player.body.onFloor()){
+    this.player.setVelocityY(-950);
+}
+}
+
+
 create() {
+
+//mobile controls
+if (IS_TOUCH){
+    this.right = this.add.sprite(window.innerWidth * 1.35, window.innerHeight, 'move').setInteractive();
+    this.right.setScrollFactor (0);
+    this.right.setScale(0.33);
+    this.right.setDepth(15);
+    this.right.on("pointerdown", function(){
+        this.moveright()
+    },this)
+
+    this.left = this.add.image(window.innerWidth * 1.05, window.innerHeight, 'move').setInteractive();
+    this.left.setScrollFactor (0);
+    this.left.setScale(0.33);
+    this.left.setDepth(15);    
+    this.left.angle=180
+    this.left.on("pointerdown", function(){
+        this.moveleft()
+    },this)
+
+    this.up = this.add.image(window.innerWidth * 1.20, window.innerHeight*0.6, 'move').setInteractive();
+    this.up.setScrollFactor (0);
+    this.up.setScale(0.33);
+    this.up.setDepth(15);    
+    this.up.angle=-90
+    this.up.on("pointerdown", function(){
+        this.moveup()
+    },this)
+}
+
+
     //tilemap
     const map = this.make.tilemap({key: "map3"});
     const tileset = map.addTilesetImage("spritesheet","tiles3");
@@ -132,7 +179,7 @@ create() {
 
 
     //camera
-    this.cameras.main.setZoom (1);
+    this.cameras.main.setZoom (0.5);
     this.cameras.main.startFollow(this.player);
 
     // Set up cursors for player input
