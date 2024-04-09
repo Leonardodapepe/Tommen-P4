@@ -97,6 +97,9 @@ class Scene2 extends Phaser.Scene {
         this.player.setVelocityY(-950);
     }
     }
+    movestop(){
+        this.player.setVelocityX(0);
+    }
 
     create() {
 
@@ -108,6 +111,8 @@ class Scene2 extends Phaser.Scene {
             this.right.setDepth(15);
             this.right.on("pointerdown", function(){
                 this.moveright()
+            },this).on("pointerup",function(){
+                this.movestop()
             },this)
     
             this.left = this.add.image(window.innerWidth * 1.05, window.innerHeight, 'move').setInteractive();
@@ -117,6 +122,8 @@ class Scene2 extends Phaser.Scene {
             this.left.angle=180
             this.left.on("pointerdown", function(){
                 this.moveleft()
+            },this).on("pointerup",function(){
+                this.movestop()
             },this)
     
             this.up = this.add.image(window.innerWidth * 1.20, window.innerHeight*0.6, 'move').setInteractive();
@@ -125,7 +132,15 @@ class Scene2 extends Phaser.Scene {
             this.up.setDepth(15);    
             this.up.angle=-90
             this.up.on("pointerdown", function(){
-                this.moveup()
+                if (this.jetpackCollected){
+                    this.player.setVelocityY(-400);
+                    this.jetpackp.setTexture('jetpackon');
+                }else{
+                    this.moveup()
+                }
+                
+            },this).on ("pointerup",function(){
+                this.jetpackp.setTexture('jetpack');
             },this)
         }
 
@@ -144,10 +159,15 @@ class Scene2 extends Phaser.Scene {
         this.physics.add.collider(this.player,layer);
 
 
-        //camera
+    //camera
+    if (IS_TOUCH){
         this.cameras.main.setZoom (0.5);
         this.cameras.main.startFollow(this.player);
-
+    }
+    else{
+        this.cameras.main.setZoom (1);
+        this.cameras.main.startFollow(this.player);
+    }
 
         // Set up cursors for player input
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -175,6 +195,7 @@ class Scene2 extends Phaser.Scene {
 
 
     update() {
+        if (!IS_TOUCH){
         // Player movement
         if (this.cursors.left.isDown) {
             this.player.setVelocityX(-600);
@@ -190,6 +211,7 @@ class Scene2 extends Phaser.Scene {
         }
 
         //jetpack
+
         if (this.jetpackCollected && this.cursors.up.isDown){
             this.player.setVelocityY(-400);
             this.jetpackp.setTexture('jetpackon');
@@ -197,12 +219,13 @@ class Scene2 extends Phaser.Scene {
         else {
             this.jetpackp.setTexture('jetpack');
         }
+    }
         //jetpack model
         if (this.jetpackCollected){
             this.jetpackp.x = this.player.x -25;
             this.jetpackp.y = this.player.y +10;
             }
-
+        
         //defines player's max velocity horizontal / vertical
         this.player.setMaxVelocity(600, 950)    
 

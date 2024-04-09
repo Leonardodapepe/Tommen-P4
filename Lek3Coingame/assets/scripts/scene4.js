@@ -51,6 +51,8 @@ if (IS_TOUCH){
     this.right.setDepth(15);
     this.right.on("pointerdown", function(){
         this.moveright()
+    },this).on("pointerup",function(){
+        this.movestop()
     },this)
 
     this.left = this.add.image(window.innerWidth * 1.05, window.innerHeight, 'move').setInteractive();
@@ -60,6 +62,8 @@ if (IS_TOUCH){
     this.left.angle=180
     this.left.on("pointerdown", function(){
         this.moveleft()
+    },this).on("pointerup",function(){
+        this.movestop()
     },this)
 
     this.up = this.add.image(window.innerWidth * 1.20, window.innerHeight*0.6, 'move').setInteractive();
@@ -106,9 +110,15 @@ if (IS_TOUCH){
          this.physics.add.collider(this.player,this.fish, () => {
             this.scene.restart();
         });
-            //camera
-            this.cameras.main.setZoom (0.5);
-            this.cameras.main.startFollow(this.player);
+    //camera
+    if (IS_TOUCH){
+        this.cameras.main.setZoom (0.5);
+        this.cameras.main.startFollow(this.player);
+    }
+    else{
+        this.cameras.main.setZoom (1);
+        this.cameras.main.startFollow(this.player);
+    }
 
 
         // Set up cursors for player input

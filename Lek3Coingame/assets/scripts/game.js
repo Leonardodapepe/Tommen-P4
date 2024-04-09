@@ -92,22 +92,26 @@ constructor(){
 
         //mobile controls
         if (IS_TOUCH){
-        this.right = this.add.sprite(window.innerWidth * 1.35, window.innerHeight, 'move').setInteractive();
-        this.right.setScrollFactor (0);
-        this.right.setScale(0.33);
-        this.right.setDepth(15);
-        this.right.on("pointerdown", function(){
-            this.moveright()
-        },this)
-
-        this.left = this.add.image(window.innerWidth * 1.05, window.innerHeight, 'move').setInteractive();
-        this.left.setScrollFactor (0);
-        this.left.setScale(0.33);
-        this.left.setDepth(15);    
-        this.left.angle=180
-        this.left.on("pointerdown", function(){
-            this.moveleft()
-        },this)
+            this.right = this.add.sprite(window.innerWidth * 1.35, window.innerHeight, 'move').setInteractive();
+            this.right.setScrollFactor (0);
+            this.right.setScale(0.33);
+            this.right.setDepth(15);
+            this.right.on("pointerdown", function(){
+                this.moveright()
+            },this).on("pointerup",function(){
+                this.movestop()
+            },this)
+    
+            this.left = this.add.image(window.innerWidth * 1.05, window.innerHeight, 'move').setInteractive();
+            this.left.setScrollFactor (0);
+            this.left.setScale(0.33);
+            this.left.setDepth(15);    
+            this.left.angle=180
+            this.left.on("pointerdown", function(){
+                this.moveleft()
+            },this).on("pointerup",function(){
+                this.movestop()
+            },this)
 
         this.up = this.add.image(window.innerWidth * 1.20, window.innerHeight*0.6, 'move').setInteractive();
         this.up.setScrollFactor (0);
