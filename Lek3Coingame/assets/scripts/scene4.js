@@ -8,7 +8,9 @@ class Scene4 extends Phaser.Scene {
         this.load.spritesheet('player', 'assets/img/egg.png', { frameWidth: 320, frameHeight: 320 });
 
         //acid
-        this.load.image('acid', 'assets/gifs/acid.gif')
+        this.load.image('acid', 'assets/gifs/acid.gif');
+        //ice
+        this.load.image('ice', 'assets/img/ice.png');
 
         //tilemap
         this.load.tilemapTiledJSON('map4', 'map4.json');
@@ -45,14 +47,21 @@ class Scene4 extends Phaser.Scene {
         this.fish = this.physics.add.image (1600, 530, 'fish');
         this.fish.setVelocityX(100);
 
+
+        //ice
+        this.ice = this.physics.add.image (700, -50, 'ice');
+
          // Add player sprite
          this.player = this.physics.add.sprite(0, 0, 'player');
          this.player.setScale(0.2); // Adjust scale as needed
          this.player.setGravityY(650);
          this.player.setBounce(0.1);
          this.physics.add.collider(this.player,layer);
+         this.physics.add.collider(this.player,this.fish, () => {
+            this.scene.restart();
+        });
             //camera
-            this.cameras.main.setZoom (1);
+            this.cameras.main.setZoom (0.8);
             this.cameras.main.startFollow(this.player);
 
 
@@ -62,15 +71,38 @@ class Scene4 extends Phaser.Scene {
 
 
     update(){
+
+        //ice sliding
+        const distanceX = Math.abs(this.player.x - this.ice.x);
+        this.onIce = false;
+
+        if (distanceX < 320){
+            this.onIce = true;
+        }
+        else{
+            this.onIce = false;
+        }
+        if (this.onIce){
         // Player movement
         if (this.cursors.left.isDown) {
-            this.player.setVelocityX(-600);
+            this.player.setAccelerationX(-600);
         } else if (this.cursors.right.isDown) {
-            this.player.setVelocityX(600);
+            this.player.setAccelerationX(600);
         } else {
-            this.player.setVelocityX(0);
+            this.player.setAccelerationX(0);
         }
-        console.log (this.fish.x);
+    }
+        else{
+            if (this.cursors.left.isDown) {
+                this.player.setVelocityX(-600);
+            } else if (this.cursors.right.isDown) {
+                this.player.setVelocityX(600);
+            } else {
+                this.player.setVelocityX(0);
+            }
+        }
+
+        //fish movement/turning
         if (this.fish.x > 2254){
             this.fish.setVelocityX(-100);
             this.fish.flipX=true
