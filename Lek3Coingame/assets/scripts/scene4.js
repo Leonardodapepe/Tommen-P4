@@ -91,6 +91,11 @@ if (IS_TOUCH){
         this.shelter.setScale(3);
         this.shelter.setDepth(-1);
 
+        //exit shelter
+        this.sheltere = this.add.image (4500, 200, 'shelter');
+        this.sheltere.setScale(3);
+        this.sheltere.setDepth(-1);
+
         //acid
         this.acid = this.physics.add.image (2000,530, 'acid');
         this.acid.setDepth(-1);
@@ -132,6 +137,11 @@ if (IS_TOUCH){
 
     update(){
 
+        //scene progression
+        const distanceX2 = Math.abs(this.player.x - this.sheltere.x);
+        if (distanceX2 < 50) {
+            this.scene.start('end');
+            }
         //ice sliding
         const distanceX = Math.abs(this.player.x - this.ice.x);
         this.onIce = false;
@@ -142,9 +152,10 @@ if (IS_TOUCH){
         else{
             this.onIce = false;
         }
-        if (this.onIce){
+        
         // Player movement
-        if (IS_TOUCH){
+        if (!IS_TOUCH){
+            if (this.onIce){
         if (this.cursors.left.isDown) {
             this.player.setAccelerationX(-600);
         } else if (this.cursors.right.isDown) {

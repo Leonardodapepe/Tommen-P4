@@ -251,16 +251,6 @@ updateTimer() {
             if (this.cursors.up.isDown && this.player.body.onFloor()) {
                 this.player.setVelocityY(-950);
             }
-    
-            //jetpack
-    
-            if (this.jetpackCollected && this.cursors.up.isDown){
-                this.player.setVelocityY(-400);
-                this.jetpackp.setTexture('jetpackon');
-            }
-            else {
-                this.jetpackp.setTexture('jetpack');
-            }
         }
     //defines player's max velocity horizontal / vertical
     this.player.setMaxVelocity(600, 950);
