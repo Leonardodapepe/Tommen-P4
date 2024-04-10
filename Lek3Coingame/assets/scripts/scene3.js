@@ -95,6 +95,10 @@ moveup(){
     this.player.setVelocityY(-950);
 }
 }
+movestop(){
+    this.player.setVelocityX(0);
+}
+
 
 
 create() {
@@ -233,24 +237,31 @@ updateTimer() {
 }
 
     update() {
-    // Player movement
-    if (this.cursors.left.isDown) {
-        this.player.setVelocityX(-600);
-    } else if (this.cursors.right.isDown) {
-        this.player.setVelocityX(600);
-    } else {
-        this.player.setVelocityX(0);
-    }
-
-    // Constrain player's x position
-    const minX = 50;
-    const maxX = 5900;
-    this.player.x = Phaser.Math.Clamp(this.player.x, minX, maxX);
-
-    // Player jump
-    if (this.cursors.up.isDown && this.player.body.onFloor()) {
-        this.player.setVelocityY(-650);
-    }
+        if (!IS_TOUCH){
+            // Player movement
+            if (this.cursors.left.isDown) {
+                this.player.setVelocityX(-600);
+            } else if (this.cursors.right.isDown) {
+                this.player.setVelocityX(600);
+            } else {
+                this.player.setVelocityX(0);
+            }
+    
+            // Player jump
+            if (this.cursors.up.isDown && this.player.body.onFloor()) {
+                this.player.setVelocityY(-950);
+            }
+    
+            //jetpack
+    
+            if (this.jetpackCollected && this.cursors.up.isDown){
+                this.player.setVelocityY(-400);
+                this.jetpackp.setTexture('jetpackon');
+            }
+            else {
+                this.jetpackp.setTexture('jetpack');
+            }
+        }
     //defines player's max velocity horizontal / vertical
     this.player.setMaxVelocity(600, 950);
 

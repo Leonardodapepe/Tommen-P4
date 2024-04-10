@@ -88,6 +88,10 @@ constructor(){
         this.player.setVelocityY(-950);
     }
     }
+    movestop(){
+        this.player.setVelocityX(0);
+    }
+
     create() {
 
         //mobile controls
@@ -199,20 +203,31 @@ constructor(){
 
     update() {
 
-        // Player movement
-        if (this.cursors.left.isDown) {
-            this.player.setVelocityX(-600);
-        } else if (this.cursors.right.isDown) {
-            this.player.setVelocityX(600);
-        } else {
-            this.player.setVelocityX(0);
+        if (!IS_TOUCH){
+            // Player movement
+            if (this.cursors.left.isDown) {
+                this.player.setVelocityX(-600);
+            } else if (this.cursors.right.isDown) {
+                this.player.setVelocityX(600);
+            } else {
+                this.player.setVelocityX(0);
+            }
+    
+            // Player jump
+            if (this.cursors.up.isDown && this.player.body.onFloor()) {
+                this.player.setVelocityY(-950);
+            }
+    
+            //jetpack
+    
+            if (this.jetpackCollected && this.cursors.up.isDown){
+                this.player.setVelocityY(-400);
+                this.jetpackp.setTexture('jetpackon');
+            }
+            else {
+                this.jetpackp.setTexture('jetpack');
+            }
         }
-
-        // Player jump
-        if (this.cursors.up.isDown && this.player.body.onFloor()) {
-            this.player.setVelocityY(-950);
-        }
-        this.player.setMaxVelocity(600, 950)
 
 
         if (this.score >= 30) {

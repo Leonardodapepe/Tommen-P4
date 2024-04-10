@@ -100,6 +100,10 @@ class Scene2 extends Phaser.Scene {
     movestop(){
         this.player.setVelocityX(0);
     }
+    movefly(){
+        this.jetpackp.setTexture('jetpackon');
+        this.player.setVelocityY(-800);
+    }
 
     create() {
 
@@ -133,14 +137,14 @@ class Scene2 extends Phaser.Scene {
             this.up.angle=-90
             this.up.on("pointerdown", function(){
                 if (this.jetpackCollected){
-                    this.player.setVelocityY(-400);
-                    this.jetpackp.setTexture('jetpackon');
+                    this.movefly()
                 }else{
                     this.moveup()
                 }
                 
             },this).on ("pointerup",function(){
                 this.jetpackp.setTexture('jetpack');
+                this.movestop()
             },this)
         }
 

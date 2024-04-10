@@ -38,6 +38,10 @@ class Scene4 extends Phaser.Scene {
         this.player.setVelocityY(-950);
     }
     }
+    movestop(){
+        this.player.setVelocityX(0);
+    }
+
 
 
 
@@ -140,6 +144,7 @@ if (IS_TOUCH){
         }
         if (this.onIce){
         // Player movement
+        if (IS_TOUCH){
         if (this.cursors.left.isDown) {
             this.player.setAccelerationX(-600);
         } else if (this.cursors.right.isDown) {
@@ -155,7 +160,11 @@ if (IS_TOUCH){
                 this.player.setVelocityX(600);
             } else {
                 this.player.setVelocityX(0);
-            }
+            }}
+        }
+        // Player jump
+        if (this.cursors.up.isDown && this.player.body.onFloor()) {
+            this.player.setVelocityY(-950);
         }
 
         //fish movement/turning
@@ -168,10 +177,7 @@ if (IS_TOUCH){
             this.fish.flipX=false
         }
 
-        // Player jump
-        if (this.cursors.up.isDown && this.player.body.onFloor()) {
-            this.player.setVelocityY(-950);
-        }
+
         //defines player's max velocity horizontal / vertical
         this.player.setMaxVelocity(600, 950)    
 
