@@ -220,7 +220,7 @@ constructor(){
     }
 
 
-        if (this.score >= 30) {
+        if (this.score >= 230) {
             // Transition to scene2
             this.scene.start('scene2');
         }
